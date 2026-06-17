@@ -1,9 +1,11 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
 import site from "../data/site";
+import { siteConfig } from "../lib/config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +34,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <script
           dangerouslySetInnerHTML={{
             __html: `try { const attrs=["bis_skin_checked","data-locator-client-url"]; const clean=()=>{const all=document.getElementsByTagName('*');for(let i=0;i<all.length;i++){const el=all[i];for(const n of attrs){if(el.hasAttribute(n)) el.removeAttribute(n);}}}; clean(); new MutationObserver(clean).observe(document.documentElement,{subtree:true,childList:true,attributes:true}); } catch(e) {}`,
@@ -44,11 +49,18 @@ export default function RootLayout({ children }) {
         {/* Content wrapper shifts right on desktop */}
         <div className="lg:pl-[320px] min-h-screen">
           <Navbar />
-          <main id="home" role="main" suppressHydrationWarning className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
+          <main
+            id="home"
+            suppressHydrationWarning
+            className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-10"
+          >
             {children}
           </main>
           <Footer />
         </div>
+        {siteConfig.googleAnalyticsId
+          ? <GoogleAnalytics gaId={siteConfig.googleAnalyticsId} />
+          : null}
       </body>
     </html>
   );
